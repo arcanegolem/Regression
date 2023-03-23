@@ -7,12 +7,14 @@ import time
 
 from types import FunctionType
 
+
 class LinearRegression:
     '''
     Класс реализующий линейную регрессию
     '''
 
     dots: np.ndarray
+
     optimizer : FunctionType
     
     weight : float
@@ -42,17 +44,18 @@ class LinearRegression:
         plt.ion()
 
         losses = np.array([])
-        for _ in range(self.max_iterations):
+        for iter in range(self.max_iterations):
             prediction = self.prediction(x)
             self.weight, self.bias = self.optimizer(dots = self.dots, weight = self.weight, bias = self.bias, batch_size = int(len(self.dots) / 2),  learning_rate = self.learning_rate)
             loss = mse(dots = self.dots, weight = self.weight, bias = self.bias)
             losses = np.append(losses, loss)
+            print(f"loss (iteration #{iter}): {loss}")
             self.visualize(x = x, y = y, prediction = prediction)
 
         plt.ioff()
         plt.show()
 
-        print(self.determination_score(prediction = prediction, y = y))
+        print(f"Коеффицент детерминации: {self.determination_score(prediction = prediction, y = y)}")
 
 
     def prediction(self, x):
